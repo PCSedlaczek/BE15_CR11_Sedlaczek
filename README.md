@@ -41,7 +41,7 @@ Pet Adoption Platform
 - [ ] Show more button to show animal details on new page
 
 ## CRUD Login
-- [ ] Create Registration & Login System
+- [*] Create Registration & Login System
 - [ ] Create seperate sessions for normal users and admins
   - [ ] Users only able to see/read and access all data, no action buttons available
   - [ ] Create Admin Dashboard to be able to create, update and delete data about animals (not users) 
@@ -66,8 +66,8 @@ Pet Adoption Platform
 
 ## Finalize
 - [ ] Format documents in Visual Studio Code
-- [ ] Push files to GitHub repository
-- [ ] Send repository link through LMS
+- [*] Push files to GitHub repository
+- [x] Send repository link through LMS
 - [ ] Invite codefactorygit as collaborator
 
 Work time: 3:30 hrs
