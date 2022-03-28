@@ -27,12 +27,14 @@ Pet Adoption Platform
     - [x] description
     - [x] size
     - [x] age
+    - [x] gender
     - [x] hobbies
+    - [x] species
     - [x] breed
     - [x] date_registered
     - [x] status/availability
-- [ ] Add sufficient test data to animals table (at least 10 records in total between small and large animals)
-- [ ] Add at least 4 senior animals (older than 8 years)
+- [x] Add sufficient test data to animals table (at least 10 records in total between small and large animals)
+- [x] Add at least 4 senior animals (older than 8 years)
 
 ## PHP CRUD
 - [ ] Display all animals on a single web page (home.php)
@@ -65,9 +67,9 @@ Pet Adoption Platform
 - [ ] 
 
 ## Finalize
-- [ ] Format documents in Visual Studio Code
+- [x] Format documents in Visual Studio Code
 - [*] Push files to GitHub repository
 - [x] Send repository link through LMS
 - [ ] Invite codefactorygit as collaborator
 
-Work time: 3:30 hrs
+Work time: 8:30 hrs
