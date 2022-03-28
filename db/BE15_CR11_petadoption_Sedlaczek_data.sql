@@ -1,47 +1,4 @@
-DROP TABLE adoptions;
-DROP TABLE animals;
-DROP TABLE users;
-
-CREATE TABLE users (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  fname VARCHAR (35),
-  lname VARCHAR (35),
-  email VARCHAR (255),
-  phone VARCHAR(26),
-  address VARCHAR (95),
-  city VARCHAR (45),
-  zip VARCHAR (10),
-  img VARCHAR(50),
-  pwd VARCHAR(255),
-  status VARCHAR(5) NOT NULL DEFAULT "user"
-);
-
-CREATE TABLE animals (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR (35),
-  image VARCHAR (50),
-  location VARCHAR (95),
-  description TEXT,
-  species VARCHAR (10),
-  size VARCHAR (6),
-  age INT,
-  gender VARCHAR (6),
-  hobbies VARCHAR (255),
-  breed VARCHAR (30),
-  registered DATE,
-  status ENUM('Available','Adopted','Reserved','Weaning','Recovering','Withdrawn','Deceased')
-);
-
-CREATE TABLE adoptions (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  fk_user INT,
-  fk_animal INT,
-  date DATE,
-  FOREIGN KEY (fk_user) REFERENCES users(id) ON DELETE SET NULL,
-  FOREIGN KEY (fk_animal) REFERENCES animals(id) ON DELETE SET NULL
-);
-
-INSERT INTO animals 
+INSERT INTO animal 
   (species, breed, name, size, age, gender, location, registered, status, image)
 VALUES
   ("Hedgehog", "", "Spike", "small", 4, "male", "Wildtierhilfe Wien", "2018-02-02", "Available", "hedgehogs/arif-hidayat-mGQ5-MTqRbQ-unsplash.jpg"), 
