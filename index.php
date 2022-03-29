@@ -1,16 +1,17 @@
 <?php
-require_once "cmp/connect.php";
+require_once "comp/connect.php";
 
 // Start new session or continue previous one
 session_start();
 
-// Redirect if session started
+// Redirect User to Home
 if (isset($_SESSION["user"])) {
   header("Location: user/home.php");
   exit;
 }
+// Redirect Admin to Admin Panel
 if (isset($_SESSION["admin"])) {
-  header("Location: dashboard.php");
+  header("Location: admin/panel.php");
 }
 
 // Initialize variables
@@ -33,27 +34,27 @@ if (isset($_POST["btn-login"])) {
   if (empty($email)) {
     $error = true;
     $valid = "invalid";
-    $emailError = "Please enter your email address.";
+    $emailError = "Please enter your email address";
   } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $error = true;
     $valid = "invalid";
-    $emailError = "Please enter a valid email address.";
+    $emailError = "Please enter a valid email address";
   }
 
   // Validate password input
   if (empty($pwd)) {
     $error = true;
     $valid = "invalid";
-    $pwdError = "Please enter your password.";
+    $pwdError = "Please enter your password";
   }
 
-  // Continue to login if no error
+  // Continue to Login if no error
   if (!$error) {
     $valid = "valid";
 
     $pwd = hash("sha256", $pwd); // password hashing
 
-    $sql = "SELECT id, fname, lname, pwd FROM users WHERE email = '$email'";
+    $sql = "SELECT id, fname, lname, pwd, status FROM users WHERE email = '$email'";
     $result = mysqli_query($connect, $sql);
     $row = mysqli_fetch_assoc($result);
     $count = mysqli_num_rows($result);
@@ -62,7 +63,7 @@ if (isset($_POST["btn-login"])) {
     if ($count == 1 && $row["pwd"] == $pwd) {
       if ($row["status"] == "admin") {
         $_SESSION["admin"] = $row["id"];
-        header("Location: dashboard.php");
+        header("Location: admin/panel.php");
       } else {
         $_SESSION["user"] = $row["id"];
         header("Location: user/home.php");
@@ -87,7 +88,7 @@ mysqli_close($connect);
   <title>User Login</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/signin.css">
-  <?php require_once "cmp/bootstrap.php"?>
+  <?php require_once "comp/bootstrap.php"?>
 </head>
 
 <body class="text-center">
@@ -117,12 +118,13 @@ mysqli_close($connect);
       <span class="text-danger"><?=$pwdError?></span>
     </div>
 
-    <button class="w-100 btn btn-block btn-lg btn-primary" type="submit">Log in</button>
+    <!-- Login button -->
+    <button class="w-100 btn btn-block btn-lg btn-primary" name="btn-login" type="submit">Log in</button>
   </form>
 
-    <a class="nav-link" href="user/register.php">Don't have an account?<br>Click here to register</a>
+  <!-- Signup link -->
+  <a class="nav-link" href="user/register.php">Don't have an account?<br>Click here to register</a>
 </main>
 
 </body>
-
 </html>

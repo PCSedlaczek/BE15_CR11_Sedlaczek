@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Error</title>
-  <?php require_once "cmp/bootstrap.php"?>
+  <?php require_once "bootstrap.php"?>
 </head>
 
 <body>

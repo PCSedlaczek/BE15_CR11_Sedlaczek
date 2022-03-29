@@ -5,29 +5,59 @@ require_once "../comp/upload.php";
 // Start new session or continue previous one
 session_start();
 
-// Redirect User to Home
-if (isset($_SESSION["user"])) {
-  header("Location: home.php");
-}
-// Redirect Admin to Admin Panel
-if (isset($_SESSION["admin"])) {
-  header("Location: ../admin/panel.php");
+// Redirect to Login if not logged in
+if (!isset($_SESSION["admin"]) && !isset($_SESSION["user"])) {
+  header("Location: ../index.php");
+  exit;
 }
 
 // Initialize variables
 $error = false;
-$fname = $fnameError =
+$link = $page =
+  $fname = $fnameError =
   $lname = $lnameError =
   $email = $emailError =
   $phone = $phoneError =
   $address = $addressError =
   $city = $cityError =
   $zip = $zipError =
-  $img = $imgError =
-  $pwd = $pwdError =
-  $pwd2 = $pwd2Error = "";
+  $img = $imgError = "";
 
-if (isset($_POST["btn-signup"])) {
+// User Back button link to Home
+if (isset($_SESSION["user"])) {
+  $link = "home.php";
+  $page = "Profile";
+}
+// Admin Back button link to Admin Panel
+if (isset($_SESSION["admin"])) {
+  $link = "../admin/panel.php";
+  $page = "Admin Panel";
+}
+
+// Fetch and populate form
+if (isset($_GET["id"])) {
+  $id = $_GET["id"];
+  $query = "SELECT * FROM users WHERE id = $id";
+  $result = mysqli_query($connect, $query);
+
+  if (mysqli_num_rows($result) == 1) {
+    $data = mysqli_fetch_assoc($result);
+    $fname = $data["fname"];
+    $lname = $data["lname"];
+    $email = $data["email"];
+    $phone = $data["phone"];
+    $address = $data["address"];
+    $city = $data["city"];
+    $zip = $data["zip"];
+    $img = $data["img"];
+  }
+}
+
+// Update form
+$class = "d-none";
+
+if (isset($_POST["btn-update"])) {
+  $id = $_POST["id"];
 
   // Sanitise user input to prevent SQL injections
   $fname = trim($_POST["fname"]); // Strip surrounding whitespace
@@ -58,17 +88,6 @@ if (isset($_POST["btn-signup"])) {
   $zip = strip_tags($zip);
   $zip = htmlspecialchars($zip);
 
-  $pwd = trim($_POST["pwd"]);
-  $pwd = strip_tags($pwd);
-  $pwd = htmlspecialchars($pwd);
-
-  $pwd2 = trim($_POST["pwd2"]);
-  $pwd2 = strip_tags($pwd2);
-  $pwd2 = htmlspecialchars($pwd2);
-
-  $uploadError = "";
-  $img = upload($_FILES["img"]);
-
   // Basic name validation
   if (empty($fname) || empty($lname)) {
     $error = true;
@@ -86,51 +105,47 @@ if (isset($_POST["btn-signup"])) {
     $error = true;
     $emailError = "Please enter valid email address";
   }
-  // Check if email already exists in database
-  else {
-    $query = "SELECT email FROM users WHERE email='$email'";
-    $result = mysqli_query($connect, $query);
-    $count = mysqli_num_rows($result);
-    if ($count != 0) {
-      $error = true;
-      $emailError = "The provided email address is already in use. Please use a different one.";
-    }
-  }
-  // Password validation
-  if (empty($pwd)) {
-    $error = true;
-    $pwdError = "Please enter password";
-  } else if (strlen($pwd) < 6) {
-    $error = true;
-    $pwdError = "Password must have at least 6 characters";
-  }
 
-  if (empty($pwd2)) {
-    $error = true;
-    $pwd2Error = "Please enter password again";
-  } else if ($pwd2 !== $pwd) {
-    $error = true;
-    $pwd2Error = "Passwords don't match";
-  }
+  // Initialize variable for image upload errors
+  $uploadError = "";
+  $imgArr = upload($_FILES["img"]);
+  $img = $imgArr->fileName;
 
-  // Password hashing for security
-  $pwd = hash("sha256", $pwd);
+  $values = "
+    fname = '$fname', 
+    lname = '$lname', 
+    email = '$email',
+    phone = '$phone',
+    address= '$address',
+    city = '$city',
+    zip = '$zip'";
 
-  // Continue to signup if no error
+  // Continue to update if no error
   if (!$error) {
 
-    $query = "INSERT INTO users(fname, lname, email, phone, address, city, zip, pwd, img)
-    VALUES('$fname','$lname','$email','$phone','$address','$city','$zip','$pwd','$img->fileName')";
+    // New image chosen
+    if ($imgArr->error === 0) {
+      // Remove old image or reset to default
+      ($_POST["img"] == "../img/users/user.png") ?: unlink("../img/users/$_POST[img]");
+      $query = "UPDATE users SET $values, img = '$img' WHERE id = $id";
+    }
+    // No new image chosen
+    else {
+      $query = "UPDATE users SET $values WHERE id = $id";
+    }
+
     $result = mysqli_query($connect, $query);
 
-    if ($result) {
-      $errTyp = "success";
-      $errMSG = "Successfully registered<br>You can log in now";
-      $uploadError = ($img->error != 0) ? $img->ErrorMessage : "";
+    if (mysqli_query($connect, $query) === true) {
+      $class = "alert alert-success";
+      $message = "The record was successfully updated";
+      $uploadError = ($imgArr->error != 0) ? $imgArr->ErrorMessage : "";
+      header("refresh:3;url=update.php?id=$id");
     } else {
-      $errTyp = "danger";
-      $errMSG = "Something went wrong<br>Please try registering again later";
-      $uploadError = ($img->error != 0) ? $img->ErrorMessage : "";
+      $class = "alert alert-danger";
+      $message = "Error while updating record : <br>".$connect->error;
+      $uploadError = ($imgArr->error != 0) ? $imgArr->ErrorMessage : "";
+      header("refresh:3;url=update.php?id=$id");
     }
   }
 }
@@ -150,11 +165,18 @@ mysqli_close($connect);
 </head>
 
 <body class="text-center">
-
-  <!-- Signup form -->
+  
   <main class="form-signin">
+    
+    <!-- Update alert -->
+    <div class="<?= $class ?>" role="alert">
+      <p><?= ($message) ?? "" ?></p>
+      <p><?= ($uploadError) ?? "" ?></p>
+    </div>
+    
+    <!-- Signup form -->
     <form method="post" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data">
-      <h1 class="h3 mb-3 fw-normal">Sign Up</h1>
+      <h1 class="h3 mb-3 fw-normal">Update profile</h1>
 
       <?php
       if (isset($errMSG)) {
@@ -185,63 +207,57 @@ mysqli_close($connect);
 
       <!-- Email input -->
       <div class="form-floating">
-        <input type="email" class="form-control form-control is-<?= $valid ?>" id="floatEmail" placeholder="name@example.com" name="email" maxlength="255">
+        <input type="email" class="form-control form-control is-<?= $valid ?>" id="floatEmail" placeholder="name@example.com" name="email" value="<?= $email ?>" maxlength="255">
         <label for="floatEmail">Email address</label>
         <span class="text-danger"><?= $emailError ?></span>
       </div>
 
       <!-- Phone input -->
       <div class="form-floating">
-        <input type="tel" class="form-control form-control is-<?= $valid ?>" id="floatPhone" placeholder="Phone number" name="phone" maxlength="26">
+        <input type="tel" class="form-control form-control is-<?= $valid ?>" id="floatPhone" placeholder="Phone number" name="phone" value="<?= $phone ?>" maxlength="26">
         <label for="floatPhone">Phone number</label>
         <span class="text-danger"><?= $phoneError ?></span>
       </div>
 
       <!-- Address input -->
       <div class="form-floating">
-        <input type="text" class="form-control form-control is-<?= $valid ?>" id="floatAddress" placeholder="Address" name="address" maxlength="95">
+        <input type="text" class="form-control form-control is-<?= $valid ?>" id="floatAddress" placeholder="Address" name="address" value="<?= $address ?>" maxlength="95">
         <label for="floatAddress">Address</label>
         <span class="text-danger"><?= $addressError ?></span>
       </div>
 
+
       <div class="d-flex gap-2">
         <!-- City input -->
         <div class="form-floating">
-          <input type="text" name="city" class="form-control" placeholder="City" maxlength="45" value="<?= $city ?>">
+          <input type="text" name="city" class="form-control" placeholder="City" value="<?= $city ?>" maxlength="45">
           <label for="floatCity">City</label>
           <span class="text-danger"><?= $cityError ?></span>
         </div>
 
         <!-- ZIP input -->
         <div class="form-floating">
-          <input type="text" name="zip" class="form-control" placeholder="ZIP Code" maxlength="10" value="<?= $zip ?>">
+          <input type="text" name="zip" class="form-control" placeholder="ZIP Code" value="<?= $zip ?>" maxlength="10">
           <label for="floatZIP">ZIP</label>
           <span class="text-danger"><?= $zipError ?></span>
         </div>
       </div>
 
       <!-- Image upload -->
-      <input class="form-control" type="file" name="img">
+      <input class="form-control" type="file" name="img" value="<?= $img ?>">
       <span class="text-danger"><?= $imgError ?></span>
+      
+      <!-- Hidden input img -->
+      <input type="hidden" name="img" value="<?= $img ?>">
+      
+      <!-- Hidden input ID -->
+      <input type="hidden" name="id" value="<?= $data["id"] ?>">
+      
+      <!-- Update button -->
+      <button type="submit" class="w-100 btn btn-block btn-lg btn-primary" name="btn-update">Save changes</button>
 
-      <!-- Password input -->
-      <div class="form-floating">
-        <input type="password" class="form-control form-control is-<?= $valid ?>" id="floatPassword" placeholder="Enter Password" name="pwd" maxlength="15">
-        <label for="floatPassword">Enter password</label>
-        <span class="text-danger"><?= $pwdError ?></span>
-      </div>
-
-      <div class="form-floating">
-        <input type="password" class="form-control form-control is-<?= $valid ?>" id="floatPassword2" placeholder="Password" name="pwd2" maxlength="15">
-        <label for="floatPassword2">Enter password again</label>
-        <span class="text-danger"><?= $pwd2Error ?></span>
-      </div>
-
-      <!-- Signup button -->
-      <button type="submit" class="w-100 btn btn-block btn-lg btn-primary" name="btn-signup">Sign Up</button>
-
-      <!-- Login Link -->
-      <a class="nav-link" href="../index.php">Log in here</a>
+      <!-- Back Link -->
+      <a class="nav-link" href="<?= $link ?>">Back to <?= $page ?></a>
     </form>
   </main>
 
