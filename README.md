@@ -37,19 +37,19 @@ Pet Adoption Platform
 - [x] Add at least 4 senior animals (older than 8 years)
 
 ## PHP CRUD
-- [ ] Display all animals on a single web page (home.php)
-- [ ] Present a nice GUI (Bootstrap/HTML/CSS/JavaScript)
-- [ ] Display all senior animals (filter or new page)
-- [ ] Show more button to show animal details on new page
+- [*] Display all animals on a single web page (home.php)
+- [*] Present a nice GUI (Bootstrap/HTML/CSS/JavaScript)
+- [*] Display all senior animals (filter or new page)
+- [*] Show more button to show animal details on new page
 
 ## CRUD Login
 - [*] Create Registration & Login System
-- [ ] Create seperate sessions for normal users and admins
-  - [ ] Users only able to see/read and access all data, no action buttons available
-  - [ ] Create Admin Dashboard to be able to create, update and delete data about animals (not users) 
-- [ ] Insert form for inserting media into database
-- [ ] Update form for updating media in database
-- [ ] Delete button for deleting media from database
+- [*] Create seperate sessions for normal users and admins
+  - [*] Users only able to see/read and access all data, no action buttons available
+  - [*] Create Admin Dashboard to be able to create, update and delete data about animals (not users) 
+- [ ] Insert form for inserting animals into database
+- [ ] Update form for updating animals in database
+- [ ] Delete button for deleting animals from database
 
 ## Bonus
 - [ ] Implement Pet Adoption
@@ -68,8 +68,8 @@ Pet Adoption Platform
 
 ## Finalize
 - [x] Format documents in Visual Studio Code
-- [*] Push files to GitHub repository
+- [x] Push files to GitHub repository
 - [x] Send repository link through LMS
 - [ ] Invite codefactorygit as collaborator
 
-Work time: 8:30 hrs
+Work time: 15:00 hrs
