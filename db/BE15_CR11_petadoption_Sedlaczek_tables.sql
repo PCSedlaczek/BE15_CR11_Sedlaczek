@@ -11,6 +11,7 @@ CREATE TABLE users (
   address VARCHAR (95),
   city VARCHAR (45),
   zip VARCHAR (10),
+  country VARCHAR (53) DEFAULT "Austria",
   img VARCHAR(50),
   pwd VARCHAR(255),
   status VARCHAR(5) NOT NULL DEFAULT "user"
@@ -23,11 +24,11 @@ CREATE TABLE animals (
   location VARCHAR (95),
   description TEXT,
   species VARCHAR (10),
+  breed VARCHAR (30),
+  gender VARCHAR (6),
   size VARCHAR (6),
   age INT,
-  gender VARCHAR (6),
   hobbies VARCHAR (255),
-  breed VARCHAR (30),
   registered DATE,
   status ENUM('Available','Adopted','Reserved','Weaning','Recovering','Withdrawn','Deceased')
 );

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2022 at 08:59 AM
+-- Generation Time: Mar 29, 2022 at 09:00 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -90,6 +90,7 @@ CREATE TABLE `users` (
   `address` varchar(95) DEFAULT NULL,
   `city` varchar(45) DEFAULT NULL,
   `zip` varchar(10) DEFAULT NULL,
+  `country` varchar(53) DEFAULT 'Austria',
   `img` varchar(50) DEFAULT NULL,
   `pwd` varchar(255) DEFAULT NULL,
   `status` varchar(5) NOT NULL DEFAULT 'user'
@@ -99,9 +100,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `phone`, `address`, `city`, `zip`, `img`, `pwd`, `status`) VALUES
-(1, 'Petra', 'Sedlaczek', 'p.sedlaczek@drei.at', '06706016567', 'Traviatagasse 12-16/13/5', 'Vienna', '1230', '624159cec762f.png', 'de35f4a917be45f4bf19e30314833d69ae16710964689fbb196dbf62e69e79f4', 'user'),
-(2, 'Petra', 'Sedlaczek', 'petra.sedlaczek@drei.at', '06706016567', 'Traviatagasse 12-16/13/5', 'Vienna', '1230', 'default_user.png', 'de35f4a917be45f4bf19e30314833d69ae16710964689fbb196dbf62e69e79f4', 'admin');
+INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `phone`, `address`, `city`, `zip`, `country`, `img`, `pwd`, `status`) VALUES
+(1, 'Petra', 'Sedlaczek', 'p.sedlaczek@drei.at', '06706016567', 'Traviatagasse 12-16/13/5', 'Wien', '1230', 'Austria', '62428c48e73f2.png', 'de35f4a917be45f4bf19e30314833d69ae16710964689fbb196dbf62e69e79f4', 'user'),
+(2, 'Petra', 'Sedlaczek', 'petra.sedlaczek@drei.at', '06706016567', 'Traviatagasse 12-16/13/5', 'Wien', '1230', 'Austria', 'admin.jpg', 'de35f4a917be45f4bf19e30314833d69ae16710964689fbb196dbf62e69e79f4', 'admin');
 
 --
 -- Indexes for dumped tables
