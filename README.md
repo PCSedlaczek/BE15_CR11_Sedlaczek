@@ -72,4 +72,4 @@ Pet Adoption Platform
 - [x] Send repository link through LMS
 - [x] Invite codefactorygit as collaborator
 
-Work time: 26:45 hrs
+Work time: 27:00 hrs
