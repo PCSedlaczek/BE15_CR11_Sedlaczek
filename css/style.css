@@ -1,16 +1,45 @@
-.userImage {
-  width: 125px;
-}
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
+@import url("https://fonts.googleapis.com/css2?display=swap&family=Lobster+Two");
+
 .hero {
   background: 
-    rgb(2, 0, 36);
-  background: 
-    linear-gradient(24deg, 
-    rgba(2, 0, 36, 1) 0%, 
-    rgba(0, 212, 255, 1) 100%);
+    linear-gradient(45deg,
+    lightskyblue 0%, 
+    skyblue 10%,
+    deepskyblue 80%);
+}
+.title {
+  font-family: Lobster Two
+}
+.fit {
+  width: fit-content;
+}
+.cover {
+  background-image: url("../img/animals/krista-mangulsone-9gz3wfHr65U-unsplash.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 fieldset {
   margin: auto;
   margin-top: 100px;
   width: 60%;
+}
+.img-thumbnail {
+  width: 125px !important;
+}
+.userImg {
+  width: 125px;
+  height: auto;
+}
+td {
+  text-align: left;
+}
+tr {
+  text-align: center;
+}
+a {
+  text-decoration: none !important;
+}
+.max-w {
+  max-width: 600px !important;
 }
