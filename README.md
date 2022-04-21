@@ -7,7 +7,7 @@ Pet Adoption Platform
 - [x] Organize project files into folders according to type
 - [x] Create CRUD Login file & folder structure
 - [x] Copy over animal images from Pet Shop CodeReview
-- [ ] Research animal rescues / adoption centers
+- [x] Research animal rescues / adoption centers
 
 ## MySQL Database 
 - [x] Create database BE15_CR11_petadoption_sedlaczek
@@ -37,19 +37,19 @@ Pet Adoption Platform
 - [x] Add at least 4 senior animals (older than 8 years)
 
 ## PHP CRUD
-- [*] Display all animals on a single web page (home.php)
-- [*] Present a nice GUI (Bootstrap/HTML/CSS/JavaScript)
-- [*] Display all senior animals (filter or new page)
-- [*] Show more button to show animal details on new page
+- [x] Display all animals on a single web page (home.php)
+- [x] Present a nice GUI (Bootstrap/HTML/CSS/JavaScript)
+- [x] Display all senior animals (filter or new page)
+- [x] Show more button to show animal details on new page
 
 ## CRUD Login
-- [*] Create Registration & Login System
-- [*] Create seperate sessions for normal users and admins
-  - [*] Users only able to see/read and access all data, no action buttons available
-  - [*] Create Admin Dashboard to be able to create, update and delete data about animals (not users) 
-- [ ] Insert form for inserting animals into database
-- [ ] Update form for updating animals in database
-- [ ] Delete button for deleting animals from database
+- [x] Create Registration & Login System
+- [x] Create seperate sessions for normal users and admins
+  - [x] Users only able to see/read and access all data, no action buttons available
+  - [x] Create Admin Dashboard to be able to create, update and delete data about animals (not users) 
+- [x] Insert form for inserting animals into database
+- [x] Update form for updating animals in database
+- [x] Delete button for deleting animals from database
 
 ## Bonus
 - [ ] Implement Pet Adoption
@@ -70,6 +70,6 @@ Pet Adoption Platform
 - [x] Format documents in Visual Studio Code
 - [x] Push files to GitHub repository
 - [x] Send repository link through LMS
-- [ ] Invite codefactorygit as collaborator
+- [x] Invite codefactorygit as collaborator
 
-Work time: 15:00 hrs
+Work time: 26:45 hrs
