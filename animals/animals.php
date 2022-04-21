@@ -1,28 +1,17 @@
 <?php
-// Start new session or continue previous one
 session_start();
 
-// Redirect Admin to Admin Panel
-if (isset($_SESSION["admin"])) {
-  header("Location: panel.php");
+if (isset($_SESSION["user"])) {
+  header("Location: ../home.php");
   exit;
 }
-// Redirect to Login if not logged in
+
 if (!isset($_SESSION["admin"]) && !isset($_SESSION["user"])) {
   header("Location: ../index.php");
   exit;
 }
 
 require_once "../comp/connect.php";
-
-// Fetch logged-in user's details
-$user = $_SESSION["user"];
-$query = "SELECT * FROM users WHERE id=$user";
-$result = mysqli_query($connect, $query);
-$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-$fname = $row["fname"];
-$lname = $row["lname"];
-$img = $row["img"];
 
 // $_GET Filters set
 if (
@@ -89,13 +78,10 @@ else {
   $query = "SELECT * FROM animals";
 }
 
-// Run SQL query based on filter
 $animals = mysqli_query($connect, $query);
 
-// Variable for table body
 $tbody = "";
 
-// Create table body for query results
 if (mysqli_num_rows($animals) > 0) {
   while($animal = mysqli_fetch_assoc($animals)) {
     $registered = date_create($animal["registered"]);
@@ -137,14 +123,14 @@ if (mysqli_num_rows($animals) > 0) {
             $animal[status]</button>
           </a>
         </td>
-        <td class='text-center'>
-          <a class='btn btn-sm m-1 btn-info text-white' href='../animals/view.php?id=$animal[id]'>Info
-          </a><br>
+        <td>
+          <a class='btn btn-success btn-sm' href='view.php?id=$animal[id]'>View</a>
+          <a class='btn btn-primary btn-sm' href='edit.php?id=$animal[id]'>Edit</a>
+          <a class='btn btn-danger btn-sm' href='delete.php?id=$animal[id]'>Delete</a>
         </td>
       </tr>";
-  }
-}
-// No query results
+  };
+} 
 else {
   $tbody = "
     <tr>
@@ -154,7 +140,6 @@ else {
     </tr>";
 }
 
-// Close database connection
 mysqli_close($connect);
 ?>
 
@@ -165,35 +150,20 @@ mysqli_close($connect);
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage animals</title>
   <link rel="stylesheet" href="../css/style.css">
   <?php require_once "../comp/bootstrap.php"?>
-  <title>Welcome - <?=$row["fname"]?> | Browse our animals</title>
 </head>
 
 <body>
-  <div class="hero p-3 mb-4 row align-items-center">
-    <!-- User area -->
-    <div class="col">
-      <img class="userImg m-4 rounded-pill" src="../img/users/<?=$img?>" alt="<?=$fname?>">
+  <div class="container max-w m-auto">
+    <div class="my-3 text-end">
+      <a class="btn btn-sm btn-primary" href="add.php">Add</a>
+      <a class="btn btn-sm btn-info" href="../panel.php">Panel</a>
     </div>
-    <div class="col">
-      <h2 class="text-white">Welcome <?=$fname?>!</h2>
-    </div>
-    <!-- Nav links -->
-    <div class="col text-end">
-      <div class="row">
-        <a class="nav-link link-light" href="logout.php?logout">Log out</a>
-        <a class="nav-link link-light" href="update.php?id=<?=$_SESSION["user"]?>">Update profile</a>
-        <a class="nav-link link-light" href="adopt.php">Adoption history</a>
-        <a class="nav-link link-light" href="home.php">Browse all animals</a>
-        <a class="nav-link link-light" href="home.php?senior">Senior animals</a>
-      </div>
-    </div>
-  </div>
 
-  <div class="container max-w">
-    <h2 class="my-4">Browse our animals</h2>
-    
+    <p class="h2 my-4">Manage Animals</p>
+
     <table class="table shadow-lg">
       <tbody>
         <?=$tbody?>

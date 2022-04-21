@@ -1,6 +1,4 @@
 <?php
-require_once "comp/connect.php";
-
 // Start new session or continue previous one
 session_start();
 
@@ -11,8 +9,10 @@ if (isset($_SESSION["user"])) {
 }
 // Redirect Admin to Admin Panel
 if (isset($_SESSION["admin"])) {
-  header("Location: admin/panel.php");
+  header("Location: panel.php");
 }
+
+require_once "comp/connect.php";
 
 // Initialize variables
 $error = false;
@@ -54,8 +54,8 @@ if (isset($_POST["btn-login"])) {
 
     $pwd = hash("sha256", $pwd); // password hashing
 
-    $sql = "SELECT id, fname, lname, pwd, status FROM users WHERE email = '$email'";
-    $result = mysqli_query($connect, $sql);
+    $query = "SELECT id, fname, lname, pwd, status FROM users WHERE email = '$email'";
+    $result = mysqli_query($connect, $query);
     $row = mysqli_fetch_assoc($result);
     $count = mysqli_num_rows($result);
 
@@ -63,13 +63,14 @@ if (isset($_POST["btn-login"])) {
     if ($count == 1 && $row["pwd"] == $pwd) {
       if ($row["status"] == "admin") {
         $_SESSION["admin"] = $row["id"];
-        header("Location: admin/panel.php");
+        header("Location: panel.php");
       } else {
         $_SESSION["user"] = $row["id"];
         header("Location: user/home.php");
       }
+    }
     // Invalid login credentials
-    } else {
+    else {
       $errMSG = "Invalid credentials. Please try again.";
       $valid = "invalid";
     }
@@ -91,12 +92,18 @@ mysqli_close($connect);
   <?php require_once "comp/bootstrap.php"?>
 </head>
 
-<body class="text-center">
+<body class="text-center cover">
+
+<div class="bg-white bg-opacity-75 rounded mx-auto my-5 fit">
+<h1 class="p-4 title">Pet Adoption Center</h1>
+</div>
 
 <!-- Login form -->
-<main class="form-signin">
+<main class="signin m-auto">
+<div class="form-signin bg-white bg-opacity-75 rounded shadow-lg">
   <form method="post" action="<?=htmlspecialchars($_SERVER["PHP_SELF"])?>">
-    <h1 class="h3 mb-3 fw-normal">User Login</h1>
+
+    <h2 class="h3 mb-3 fw-normal">User Login</h2>
 
     <?php
       if (isset($errMSG)) {
@@ -106,24 +113,25 @@ mysqli_close($connect);
     
     <!-- E-Mail input -->
     <div class="form-floating">
-      <input type="email" class="form-control form-control is-<?=$valid?>" id="floatEmail" placeholder="name@example.com" name="email" maxlength="255">
-      <label for="floatEmail">Email address</label>
+      <input type="email" name="email" id="inputEmail" class="form-control form-control-is-<?=$valid?>"  placeholder="name@example.com" maxlength="255">
+      <label for="inputEmail">Email address</label>
       <span class="text-danger"><?=$emailError?></span>
     </div>
 
     <!-- Password input -->
     <div class="form-floating">
-      <input type="password" class="form-control form-control is-<?=$valid?>" id="floatPassword" placeholder="Password" name="pwd" maxlength="15">
-      <label for="floatPassword">Password</label>
+      <input type="password" class="form-control form-control-is-<?=$valid?>" id="inputPassword" placeholder="Password" name="pwd" maxlength="15">
+      <label for="inputPassword">Password</label>
       <span class="text-danger"><?=$pwdError?></span>
     </div>
 
     <!-- Login button -->
-    <button class="w-100 btn btn-block btn-lg btn-primary" name="btn-login" type="submit">Log in</button>
+    <button class="w-100 btn btn-block btn-lg btn-primary mt-2" name="btn-login" type="submit">Log in</button>
   </form>
 
   <!-- Signup link -->
-  <a class="nav-link" href="user/register.php">Don't have an account?<br>Click here to register</a>
+  <a class="nav-link" href="user/register.php">Not yet registered? Click here to sign up for a free account</a>
+</div>
 </main>
 
 </body>

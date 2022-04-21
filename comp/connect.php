@@ -1,5 +1,5 @@
 <?php
-// Create connection
+// Create database connection
 $connect = mysqli_connect(
   $host = "localhost",
   $user = "root",
@@ -7,7 +7,7 @@ $connect = mysqli_connect(
   $db = "BE15_CR11_petadoption_Sedlaczek"
 );
 
-// Check connection
+// Check database connection
 if (!$connect) {
   die("Database connection failed: ".mysqli_connect_error());
 }

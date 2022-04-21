@@ -13,7 +13,7 @@ else if (isset($_SESSION["user"])) {
 } 
 // Redirect Admin to Admin Panel
 else if (isset($_SESSION["admin"])) {
-  header("Location: ../admin/panel.php");
+  header("Location: ../panel.php");
 }
 
 // End session and redirect to Login

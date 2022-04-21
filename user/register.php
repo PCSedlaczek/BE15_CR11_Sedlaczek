@@ -1,7 +1,4 @@
 <?php
-require_once "../comp/connect.php";
-require_once "../comp/upload.php";
-
 // Start new session or continue previous one
 session_start();
 
@@ -11,8 +8,11 @@ if (isset($_SESSION["user"])) {
 }
 // Redirect Admin to Admin Panel
 if (isset($_SESSION["admin"])) {
-  header("Location: ../admin/panel.php");
+  header("Location: ../panel.php");
 }
+
+require_once "../comp/connect.php";
+require_once "../comp/upload.php";
 
 // Initialize variables
 $error = false;
@@ -84,7 +84,7 @@ if (isset($_POST["btn-signup"])) {
   // Basic email validation
   if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $error = true;
-    $emailError = "Please enter valid email address";
+    $emailError = "Please enter a valid email address";
   }
   // Check if email already exists in database
   else {
@@ -93,7 +93,7 @@ if (isset($_POST["btn-signup"])) {
     $count = mysqli_num_rows($result);
     if ($count != 0) {
       $error = true;
-      $emailError = "The provided email address is already in use. Please use a different one.";
+      $emailError = "The provided email address is already in use<br> Please use a different one";
     }
   }
   // Password validation
@@ -125,12 +125,14 @@ if (isset($_POST["btn-signup"])) {
 
     if ($result) {
       $errTyp = "success";
-      $errMSG = "Successfully registered<br>You can log in now";
-      $uploadError = ($img->error != 0) ? $img->ErrorMessage : "";
+      $errMSG = "Registration successful<br>You can log in now";
+      $uploadError = ($img->error != 0) ?
+        $img->ErrorMessage : "";
     } else {
       $errTyp = "danger";
-      $errMSG = "Something went wrong<br>Please try registering again later";
-      $uploadError = ($img->error != 0) ? $img->ErrorMessage : "";
+      $errMSG = "Something went wrong during the registration<br>Please try again later";
+      $uploadError = ($img->error != 0) ?
+        $img->ErrorMessage : "";
     }
   }
 }
@@ -146,7 +148,7 @@ mysqli_close($connect);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Registration</title>
   <link rel="stylesheet" href="../css/signin.css">
-  <?php require_once "../comp/bootstrap.php" ?>
+  <?php require_once "../comp/bootstrap.php"?>
 </head>
 
 <body class="text-center">
@@ -159,9 +161,9 @@ mysqli_close($connect);
       <?php
       if (isset($errMSG)) {
       ?>
-        <div class="alert alert-<?= $errTyp ?>">
-          <p><?= $errMSG ?></p>
-          <p><?= $uploadError ?></p>
+        <div class="alert alert-<?=$errTyp?>">
+          <p><?=$errMSG?></p>
+          <p><?=$uploadError?></p>
         </div>
       <?php
       }

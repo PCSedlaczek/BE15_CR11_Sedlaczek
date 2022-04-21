@@ -1,7 +1,4 @@
 <?php
-require_once "../comp/connect.php";
-require_once "../comp/upload.php";
-
 // Start new session or continue previous one
 session_start();
 
@@ -10,6 +7,9 @@ if (!isset($_SESSION["admin"]) && !isset($_SESSION["user"])) {
   header("Location: ../index.php");
   exit;
 }
+
+require_once "../comp/connect.php";
+require_once "../comp/upload.php";
 
 // Initialize variables
 $error = false;
@@ -30,7 +30,7 @@ if (isset($_SESSION["user"])) {
 }
 // Admin Back button link to Admin Panel
 if (isset($_SESSION["admin"])) {
-  $link = "../admin/panel.php";
+  $link = "../panel.php";
   $page = "Admin Panel";
 }
 
