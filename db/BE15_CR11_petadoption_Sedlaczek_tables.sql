@@ -20,17 +20,17 @@ CREATE TABLE users (
 CREATE TABLE animals (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR (35),
-  image VARCHAR (50),
+  img VARCHAR (100),
   location VARCHAR (95),
   description TEXT,
   species VARCHAR (10),
   breed VARCHAR (30),
-  gender VARCHAR (6),
-  size VARCHAR (6),
+  gender ENUM("male","female"),
+  size ENUM("tiny","small","medium","large","x-large"),
   age INT,
   hobbies VARCHAR (255),
   registered DATE,
-  status ENUM('Available','Adopted','Reserved','Weaning','Recovering','Withdrawn','Deceased')
+  status ENUM("Available","Adopted","Reserved","Weaning","Recovering","Withdrawn","Deceased") DEFAULT "Available"
 );
 
 CREATE TABLE adoptions (

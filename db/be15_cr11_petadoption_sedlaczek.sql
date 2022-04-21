@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2022 at 09:00 AM
+-- Generation Time: Apr 21, 2022 at 09:38 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -36,6 +36,13 @@ CREATE TABLE `adoptions` (
   `date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `adoptions`
+--
+
+INSERT INTO `adoptions` (`id`, `fk_user`, `fk_animal`, `date`) VALUES
+(1, 1, 3, '2022-04-20');
+
 -- --------------------------------------------------------
 
 --
@@ -45,24 +52,24 @@ CREATE TABLE `adoptions` (
 CREATE TABLE `animals` (
   `id` int(11) NOT NULL,
   `name` varchar(35) DEFAULT NULL,
-  `image` varchar(50) DEFAULT NULL,
+  `img` varchar(100) DEFAULT NULL,
   `location` varchar(95) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `species` varchar(10) DEFAULT NULL,
-  `size` varchar(6) DEFAULT NULL,
+  `size` enum('tiny','small','medium','large','x-large') DEFAULT NULL,
   `age` int(11) DEFAULT NULL,
-  `gender` varchar(6) DEFAULT NULL,
+  `gender` enum('male','female') DEFAULT NULL,
   `hobbies` varchar(255) DEFAULT NULL,
   `breed` varchar(30) DEFAULT NULL,
   `registered` date DEFAULT NULL,
-  `status` enum('Available','Adopted','Reserved','Weaning','Recovering','Withdrawn','Deceased') DEFAULT NULL
+  `status` enum('Available','Adopted','Reserved','Weaning','Recovering','Withdrawn','Deceased') DEFAULT 'Available'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `animals`
 --
 
-INSERT INTO `animals` (`id`, `name`, `image`, `location`, `description`, `species`, `size`, `age`, `gender`, `hobbies`, `breed`, `registered`, `status`) VALUES
+INSERT INTO `animals` (`id`, `name`, `img`, `location`, `description`, `species`, `size`, `age`, `gender`, `hobbies`, `breed`, `registered`, `status`) VALUES
 (1, 'Spike', 'hedgehogs/arif-hidayat-mGQ5-MTqRbQ-unsplash.jpg', 'Wildtierhilfe Wien', NULL, 'Hedgehog', 'small', 4, 'male', NULL, '', '2018-02-02', 'Available'),
 (2, 'Nero', 'rabbits/aneta-voborilova-HxfVwDszy2Q-unsplash.jpg', 'TierQuarTier Wien', NULL, 'Bunny', 'medium', 3, 'male', NULL, '', '2019-06-30', 'Available'),
 (3, 'Cookie', 'rabbits/erik-jan-leusink-SDX4KWIbA-unsplash.jpg', 'TierQuarTier Wien', NULL, 'Bunny', 'medium', 1, 'female', NULL, '', '2021-06-20', 'Available'),
@@ -73,7 +80,7 @@ INSERT INTO `animals` (`id`, `name`, `image`, `location`, `description`, `specie
 (8, 'Rambo', 'dogs/flouffy-qEO5MpLyOks-unsplash.jpg', 'TierQuarTier Wien', NULL, 'Dog', 'medium', 11, 'male', NULL, 'Schnauzer', '2019-04-05', 'Available'),
 (9, 'Stella', 'cats/fabrice-audio-ZDLYDbIeYpw-unsplash.jpg', 'TierQuarTier Wien', NULL, 'Cat', 'large', 10, 'female', NULL, 'British Longhair', '2015-06-25', 'Available'),
 (10, 'Sandy', 'reptiles/stijn-swinnen-DXoWetDELis-unsplash.jpg', 'Wildtierhilfe Wien', NULL, 'Snake', 'medium', 5, 'male', NULL, 'Beauty rat snake', '2019-03-14', 'Available'),
-(11, 'Cassiopeia', 'reptiles/marcus-dietachmair-4JUscQ_9UrA-unsplash.j', 'Wildtierhilfe Wien', NULL, 'Tortoise', 'medium', 12, 'female', NULL, 'Greek tortoise', '2015-07-02', 'Available');
+(11, 'Cassiopeia', 'reptiles/marcus-dietachmair-4JUscQ_9UrA-unsplash.jpg', 'Wildtierhilfe Wien', NULL, 'Tortoise', 'medium', 12, 'female', NULL, 'Greek tortoise', '2015-07-02', 'Available');
 
 -- --------------------------------------------------------
 
@@ -101,7 +108,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fname`, `lname`, `email`, `phone`, `address`, `city`, `zip`, `country`, `img`, `pwd`, `status`) VALUES
-(1, 'Petra', 'Sedlaczek', 'p.sedlaczek@drei.at', '06706016567', 'Traviatagasse 12-16/13/5', 'Wien', '1230', 'Austria', '62428c48e73f2.png', 'de35f4a917be45f4bf19e30314833d69ae16710964689fbb196dbf62e69e79f4', 'user'),
+(1, 'Petra', 'Sedlaczek', 'p.sedlaczek@drei.at', '06706016567', 'Traviatagasse 12-16/13/5', 'Wien', '1230', 'Austria', '626103025fea4.png', 'de35f4a917be45f4bf19e30314833d69ae16710964689fbb196dbf62e69e79f4', 'user'),
 (2, 'Petra', 'Sedlaczek', 'petra.sedlaczek@drei.at', '06706016567', 'Traviatagasse 12-16/13/5', 'Wien', '1230', 'Austria', 'admin.jpg', 'de35f4a917be45f4bf19e30314833d69ae16710964689fbb196dbf62e69e79f4', 'admin');
 
 --
@@ -136,19 +143,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `adoptions`
 --
 ALTER TABLE `adoptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `animals`
 --
 ALTER TABLE `animals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
